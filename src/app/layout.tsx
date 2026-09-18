@@ -21,6 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Newsreader:ital,opsz,wght@0,6..72,400..600;1,6..72,400..500&display=swap"
         />
+	<script
+	  src="/js/marsen-sdk.js"
+	  data-api-key="ingESaer83LPlH5MOtoLJtwNVAEMADKv9s3swTXXNi0="
+	></script>
       </head>
       <body>
         <a href="#main" className="skip-link">Skip to content</a>
