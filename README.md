@@ -32,6 +32,38 @@ On Vercel: import the repo and set `NEXT_PUBLIC_SITE_URL` to your live address (
 
 Commit `public/images/uploads` with the rest of the project so the deploy includes the images. A few hundred MB of images in git is workable. If it grows much larger, move them to a storage bucket and update the paths.
 
+## The homepage rotates daily
+
+The homepage changes once a day by itself, with no redeploys. Vercel rebuilds it in the background at most once an hour, and the picks change at midnight in the timezone set in `data/homepage.json`. Every visitor sees the same homepage on a given day.
+
+What goes where:
+
+- **Top story:** cycles through the posts marked `featured: true`, one per day, in a fixed shuffled order. Every featured story gets a turn before any repeats.
+- **New on InsteadThis:** only appears when stories were published in the last 30 days. New posts always show up here first.
+- **Seasonal section:** stories for whatever's on the calendar (Diwali, Halloween, monsoon, Valentine's, and so on). It picks the most specific season that's active and has at least 3 matching stories.
+- **Picked for today:** a random mix, at most two per topic.
+- **Topic sections:** three topics a day, rotating through all seven.
+
+Stories with a past year in the title (like "…in 2024") and holiday stories that are out of season are kept out of rotation. They're still on topic pages and in search.
+
+### Controlling it
+
+Everything is in `data/homepage.json`.
+
+To pin a story as the top story for certain dates, add it to `pinned`. It overrides the rotation for those days:
+
+```json
+"pinned": [
+  { "slug": "how-does-diwali-help-in-lightening-lives", "from": "2026-11-01", "to": "2026-11-08" }
+]
+```
+
+To add or adjust a season, edit `seasons`. `from` and `to` are month-day (`MM-DD`) and can wrap past New Year. `match` lists words to look for in story titles and tags.
+
+To change which stories can be the top story, set `featured: true` or `false` in a story's file.
+
+The logic lives in `src/lib/rotation.ts`.
+
 ## How it's organized
 
 | Path | What it is |
@@ -42,6 +74,7 @@ Commit `public/images/uploads` with the rest of the project so the deploy includ
 | `src/app/globals.css` | All styling. Color and type tokens are at the top. |
 | `src/app/...` | Pages: home, `/stories`, `/stories/[slug]`, `/topics/[topic]`, `/search` |
 | `data/redirects.json` | Old WordPress URLs mapped to new ones |
+| `data/homepage.json` | Homepage rotation: pinned stories, seasons, timezone |
 | `scripts/` | Image copy script, image list, and the topic classifier |
 
 ## Topics
@@ -88,7 +121,7 @@ Put the image in `public/images/uploads/...` to match the path. Marking a story 
 - Every old post URL (`/2023/05/12/post-name/`) permanently redirects to `/stories/post-name`.
 - Old `/category/`, `/tag/`, and `/author/` pages redirect to `/stories`.
 - Old `/wp-content/uploads/...` image links redirect to the new image paths.
-- `/sitemap.xml` lists every story. Submit it in Google Search Console after launch.
+- `/sitemap.xml` lists every story and its featured image. Submit it in Google Search Console after launch.
 
 ## Before launch
 

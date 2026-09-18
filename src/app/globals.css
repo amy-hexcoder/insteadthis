@@ -1139,3 +1139,11 @@ a.chip:hover {
     scroll-behavior: auto !important;
   }
 }
+
+/* ---------- homepage rotation sections ---------- */
+.section--flush {
+  padding-top: 0;
+}
+.season {
+  padding-bottom: clamp(56px, 7vw, 88px);
+}

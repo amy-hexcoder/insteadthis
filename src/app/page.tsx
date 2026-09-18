@@ -1,27 +1,21 @@
 import Link from "next/link";
 import { getAllPosts, getPostsByTopic, toMeta } from "@/lib/posts";
+import { buildHomepage } from "@/lib/rotation";
 import { TOPICS, topicStyle } from "@/lib/topics";
 import { Cover } from "@/components/Cover";
 import { CompactCard, PostGrid, TopicChip } from "@/components/PostCard";
 import { TopicIcon } from "@/components/Icons";
 import { Newsletter } from "@/components/Newsletter";
 
+// Rebuild the homepage in the background at most once an hour.
+// The picks themselves change once a day (see src/lib/rotation.ts).
+export const revalidate = 3600;
+
 export default function Home() {
   const all = getAllPosts();
-  const generic = /^\s*(akira\s*-\s*)?product reviews?\s*$/i;
-  const pool = all.filter((p) => !generic.test(p.title));
-  const withImages = pool.filter((p) => p.image);
-  const hero = withImages.find((p) => p.featured) ?? withImages[0] ?? pool[0];
-  const rest = pool.filter((p) => p.slug !== hero.slug);
-  const more = rest.filter((p) => p.image).slice(0, 3);
-  const used = new Set([hero.slug, ...more.map((p) => p.slug)]);
-  const latest = rest.filter((p) => !used.has(p.slug)).slice(0, 6);
-  latest.forEach((p) => used.add(p.slug));
+  const home = buildHomepage(all);
+  const { hero } = home;
   const counts = Object.fromEntries(TOPICS.map((t) => [t.slug, getPostsByTopic(t.slug).length]));
-  const spotlight = TOPICS.slice(0, 3).map((t) => ({
-    topic: t,
-    posts: getPostsByTopic(t.slug).filter((p) => !used.has(p.slug) && !generic.test(p.title)).slice(0, 3).map(toMeta),
-  }));
 
   return (
     <>
@@ -40,11 +34,32 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="wrap more" aria-label="More new stories">
-        {more.map((p) => (
+      <section className="wrap more" aria-label="More stories">
+        {home.strip.map((p) => (
           <CompactCard key={p.slug} post={toMeta(p)} />
         ))}
       </section>
+
+      {home.recent.length ? (
+        <section className="wrap section section--flush" aria-labelledby="new-h">
+          <div className="section-head">
+            <h2 id="new-h" className="section-title">New on InsteadThis</h2>
+            <Link href="/stories" className="section-link">See all {all.length} stories</Link>
+          </div>
+          <PostGrid posts={home.recent.map(toMeta)} />
+        </section>
+      ) : null}
+
+      {home.season ? (
+        <section className="season" aria-labelledby="season-h">
+          <div className="wrap">
+            <div className="section-head">
+              <h2 id="season-h" className="section-title">{home.season.label}</h2>
+            </div>
+            <PostGrid posts={home.season.posts.map(toMeta)} />
+          </div>
+        </section>
+      ) : null}
 
       <section className="band band--white" aria-labelledby="topics-h">
         <div className="wrap">
@@ -64,23 +79,25 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="wrap section" aria-labelledby="latest-h">
+      <section className="wrap section" aria-labelledby="picks-h">
         <div className="section-head">
-          <h2 id="latest-h" className="section-title">Latest stories</h2>
+          <h2 id="picks-h" className="section-title">Picked for today</h2>
           <Link href="/stories" className="section-link">See all {all.length} stories</Link>
         </div>
-        <PostGrid posts={latest.map(toMeta)} />
+        <PostGrid posts={home.picks.map(toMeta)} />
       </section>
 
-      {spotlight.map(({ topic, posts }) => (
-        <section key={topic.slug} className="wrap section section--tight" aria-labelledby={`h-${topic.slug}`}>
-          <div className="section-head">
-            <h2 id={`h-${topic.slug}`} className="section-title">{topic.name}</h2>
-            <Link href={`/topics/${topic.slug}`} className="section-link" style={{ color: topic.ink }}>More in {topic.name}</Link>
-          </div>
-          <PostGrid posts={posts} />
-        </section>
-      ))}
+      {home.spotlights.map(({ topic, posts }) =>
+        posts.length ? (
+          <section key={topic.slug} className="wrap section section--tight" aria-labelledby={`h-${topic.slug}`}>
+            <div className="section-head">
+              <h2 id={`h-${topic.slug}`} className="section-title">{topic.name}</h2>
+              <Link href={`/topics/${topic.slug}`} className="section-link" style={{ color: topic.ink }}>More in {topic.name}</Link>
+            </div>
+            <PostGrid posts={posts.map(toMeta)} />
+          </section>
+        ) : null,
+      )}
 
       <div className="wrap">
         <Newsletter />

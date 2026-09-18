@@ -1,0 +1,173 @@
+{
+  "timezone": "America/Los_Angeles",
+  "pinned": [],
+  "seasons": [
+    {
+      "label": "New year, fresh start",
+      "from": "12-27",
+      "to": "01-15",
+      "match": [
+        "new year",
+        "resolution",
+        "fresh start",
+        "lohri",
+        "sankranti"
+      ]
+    },
+    {
+      "label": "Cozy winter reads",
+      "from": "11-20",
+      "to": "02-20",
+      "match": [
+        "winter",
+        "cozy",
+        "sweater",
+        "snow",
+        "woolen",
+        "coat"
+      ]
+    },
+    {
+      "label": "Valentine's week",
+      "from": "02-01",
+      "to": "02-15",
+      "match": [
+        "valentine",
+        "valentines",
+        "galentine"
+      ]
+    },
+    {
+      "label": "Holi and spring",
+      "from": "02-25",
+      "to": "03-31",
+      "match": [
+        "holi",
+        "spring",
+        "women's day",
+        "thandai"
+      ]
+    },
+    {
+      "label": "Easter and spring",
+      "from": "03-25",
+      "to": "04-25",
+      "match": [
+        "easter",
+        "spring",
+        "earth day",
+        "april fool"
+      ]
+    },
+    {
+      "label": "For Mother's Day",
+      "from": "05-01",
+      "to": "05-14",
+      "match": [
+        "mother's day",
+        "mothers day"
+      ]
+    },
+    {
+      "label": "Summer mode",
+      "from": "04-20",
+      "to": "07-15",
+      "match": [
+        "summer",
+        "beach",
+        "sunscreen",
+        "heatwave"
+      ]
+    },
+    {
+      "label": "Pride month",
+      "from": "06-01",
+      "to": "06-30",
+      "match": [
+        "pride",
+        "pride month"
+      ]
+    },
+    {
+      "label": "Monsoon season",
+      "from": "06-20",
+      "to": "09-30",
+      "match": [
+        "monsoon",
+        "rainy",
+        "rain"
+      ]
+    },
+    {
+      "label": "Festive season",
+      "from": "08-20",
+      "to": "10-10",
+      "match": [
+        "ganesh",
+        "navratri",
+        "dussehra",
+        "raksha",
+        "rakhi",
+        "friendship day",
+        "onam",
+        "janmashtami"
+      ]
+    },
+    {
+      "label": "Diwali is coming",
+      "from": "10-10",
+      "to": "11-15",
+      "match": [
+        "diwali",
+        "diya",
+        "rangoli",
+        "festival of lights"
+      ]
+    },
+    {
+      "label": "Halloween",
+      "from": "10-10",
+      "to": "10-31",
+      "match": [
+        "halloween",
+        "spooky",
+        "costume",
+        "prank"
+      ]
+    },
+    {
+      "label": "Autumn edit",
+      "from": "09-15",
+      "to": "11-25",
+      "match": [
+        "autumn",
+        "fall season",
+        "fall fashion",
+        "fall outfit",
+        "fall decor",
+        "for fall",
+        "this fall"
+      ]
+    },
+    {
+      "label": "Thanksgiving",
+      "from": "11-10",
+      "to": "11-30",
+      "match": [
+        "thanksgiving"
+      ]
+    },
+    {
+      "label": "Holiday season",
+      "from": "12-01",
+      "to": "12-26",
+      "match": [
+        "christmas",
+        "santa",
+        "holiday season",
+        "holidays",
+        "december"
+      ]
+    }
+  ]
+}
